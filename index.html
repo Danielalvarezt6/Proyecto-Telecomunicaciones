@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plataforma interactiva de infraestructura pública de telecomunicaciones del Estado de Sonora.">
+    <title>Plataforma de Infraestructura Pública de Telecomunicaciones — Estado de Sonora</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Google Fonts: Outfit (titles) + Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <script>
+        window.addEventListener('error', function(e) {
+            const el = document.getElementById('loadingOverlay');
+            if(el) {
+                el.innerHTML = '<div style="color:red; background:white; padding:20px; z-index:999999; font-size:16px;">' + e.message + ' at ' + e.filename + ':' + e.lineno + '</div>';
+            }
+        });
+    </script>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Cargando datos de infraestructura…</div>
+    </div>
+
+    <!-- Header Institucional -->
+    <header class="site-header">
+        <div class="header-top">
+            <div class="header-brand">
+                <div class="header-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="2"></circle>
+                        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path>
+                    </svg></div>
+                <div class="header-titles">
+                    <h1>Plataforma de Infraestructura Pública</h1>
+                    <p>Estado de Sonora · Sistema de Telecomunicaciones</p>
+                </div>
+            </div>
+        </div>
+        <div class="header-accent"></div>
+    </header>
+
+    <!-- Navegación -->
+    <nav class="nav-bar">
+        <div class="nav-inner">
+            <div class="tabs-menu">
+                <button class="tab-button active" onclick="switchTab('tab-migracion')" id="btn-tab-migracion">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                    Plan de Migración
+                </button>
+                <button class="tab-button" onclick="switchTab('tab-conexion')" id="btn-tab-conexion">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    Conexión Inicial
+                </button>
+                <button class="tab-button" onclick="switchTab('tab-nuevas-torres')" id="btn-tab-nuevas-torres">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49"></path></svg>
+                    Propuesta de Infraestructura
+                </button>
+                <button class="tab-button" onclick="switchTab('tab-padron')" id="btn-tab-padron">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+                    Padrón General
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+
+        <!-- Info general del proyecto -->
+        <div class="hero-banner">
+            <div class="hero-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg></div>
+            <div class="hero-content">
+                <h2>Objetivo del Proyecto</h2>
+                <p>Reducir la dependencia de proveedores privados y optimizar el uso de infraestructura estatal para brindar conectividad a instituciones. Se utiliza un <strong>Índice de Prioridad de Conectividad (IPC)</strong> de 4 niveles para proponer migraciones (Nivel 2), conexiones iniciales (Nivel 3) y despliegue de nueva infraestructura (Nivel 4).</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             PESTAÑA 1: Plan de Migración (Nivel 2)
+             ═══════════════════════════════════════════════ -->
+        <div id="tab-migracion" class="tab-content active">
+
+            <div class="tab-context tab-context--gold">
+                <div class="tab-context-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg></div>
+                <div>
+                    <p><strong>Nivel 2 - Estrategia de Migración:</strong> Existen instituciones que actualmente pagan internet privado (aprox. $1,300 MXN mensuales) pero se ubican a menos de 10 km de la infraestructura estatal.</p>
+                    <p>La migración técnica de estas candidatas representa un ahorro potencial estimado de <strong>$26,722,800 MXN anuales</strong>.</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon accent"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Candidatas Técnicas
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Instituciones a menos de 10 km de una torre estatal que actualmente pagan a un proveedor privado.</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="mig-kpi-inst">1,713</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Ahorro Anual Proyectado
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Ahorro estimado si todas las candidatas se migran a la red pública ($1,300 mensuales promedio).</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="mig-kpi-ahorro">26.7</span><span class="kpi-unit">MDP</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon success"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Con Línea de Vista
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Instituciones validadas con conexión directa y libre (sin obstáculos topográficos significativos).</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="mig-kpi-vista">1,642</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon primary"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3" /><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /><circle cx="18" cy="5" r="3" /></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Distancia Media
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Distancia promedio entre la institución y la torre estatal a migrar.</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="mig-kpi-dist">0</span><span class="kpi-unit">km</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa y Gráficas -->
+            <div class="dashboard-grid-main">
+                <div class="chart-card map-card">
+                    <div class="chart-header">
+                        <h3><span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span> Mapa de Posibles Migraciones</h3>
+                    </div>
+                    <div class="section-body" style="padding: 0;">
+                        <div class="map-container">
+                            <div id="map-migracion"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="side-charts">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Contratos por Proveedor</h3>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-sm">
+                            <canvas id="chart-mig-proveedores"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Distribución de Distancias</h3>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-sm">
+                            <canvas id="chart-mig-distribucion"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Listado de Instituciones Candidatas</h3>
+                </div>
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label class="filter-label">Municipio</label>
+                        <select id="map-mig-filter-mun" class="filter-select" onchange="applyFilters('mig')"><option value="all">Todos los municipios</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Proveedor</label>
+                        <select id="map-mig-filter-prov" class="filter-select" onchange="applyFilters('mig')"><option value="all">Todos los proveedores privados</option></select>
+                    </div>
+                    <button class="btn-reset" onclick="resetFilters('mig')">Restablecer</button>
+                </div>
+                <div class="table-container">
+                    <table id="table-mig" class="data-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('mig', 'id_institucion')">ID ▼</th>
+                                <th onclick="sortTable('mig', 'institucion')">Institución ▼</th>
+                                <th onclick="sortTable('mig', 'municipio')">Municipio ▼</th>
+                                <th onclick="sortTable('mig', 'proveedor')">Proveedor ▼</th>
+                                <th onclick="sortTable('mig', 'torre_cercana')">Torre Destino ▼</th>
+                                <th onclick="sortTable('mig', 'dist_km')">Distancia (km) ▼</th>
+                                <th onclick="sortTable('mig', 'linea_vista')">Línea Vista ▼</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-mig"></tbody>
+                    </table>
+                </div>
+                <div class="table-info">
+                    <span id="info-mig">Mostrando 0 registros</span>
+                    <div class="table-pagination" id="pagination-mig"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             PESTAÑA 2: Conexión Inicial (Nivel 3)
+             ═══════════════════════════════════════════════ -->
+        <div id="tab-conexion" class="tab-content">
+            <div class="tab-context tab-context--teal">
+                <div class="tab-context-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></div>
+                <div>
+                    <p><strong>Nivel 3 - Estrategia de Conexión Inicial:</strong> Instituciones sin conectividad registrada que se encuentran a 10 km o menos de una torre estatal.</p>
+                    <p>Estas instituciones representan una oportunidad para ampliar la cobertura pública sin requerir nueva infraestructura desde cero, aprovechando la capacidad existente.</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon primary"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Candidatas
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Total de instituciones Nivel 3 cercanas a una torre estatal.</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="con-kpi-inst">755</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon success"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Con Línea de Vista
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Conexión libre sin obstáculos topográficos, factibles de forma directa.</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="con-kpi-vista">714</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon danger"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Obstruidas
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Requieren repetidor, aumento de altura o revisión en campo.</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="con-kpi-obs">41</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3" /><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /><circle cx="18" cy="5" r="3" /></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Distancia Media
+                            <span class="tooltip-trigger" tabindex="0">?<span class="tooltip-text">Distancia promedio a la torre propuesta.</span></span>
+                        </div>
+                        <div class="kpi-value"><span id="con-kpi-dist">0</span><span class="kpi-unit">km</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid-main">
+                <div class="chart-card map-card">
+                    <div class="chart-header">
+                        <h3>Mapa de Posibles Conexiones Iniciales</h3>
+                    </div>
+                    <div class="section-body" style="padding: 0;">
+                        <div class="map-container">
+                            <div id="map-conexion"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="side-charts">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Instituciones por Sector</h3>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-sm">
+                            <canvas id="chart-con-sectores"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Viabilidad Topográfica</h3>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-sm">
+                            <canvas id="chart-con-viabilidad"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Listado de Instituciones (Nivel 3)</h3>
+                </div>
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label class="filter-label">Municipio</label>
+                        <select id="map-con-filter-mun" class="filter-select" onchange="applyFilters('con')"><option value="all">Todos los municipios</option></select>
+                    </div>
+                    <button class="btn-reset" onclick="resetFilters('con')">Restablecer</button>
+                </div>
+                <div class="table-container">
+                    <table id="table-con" class="data-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('con', 'id_institucion')">ID ▼</th>
+                                <th onclick="sortTable('con', 'institucion')">Institución ▼</th>
+                                <th onclick="sortTable('con', 'sector')">Sector ▼</th>
+                                <th onclick="sortTable('con', 'municipio')">Municipio ▼</th>
+                                <th onclick="sortTable('con', 'torre_cercana')">Torre Cercana ▼</th>
+                                <th onclick="sortTable('con', 'dist_km')">Distancia (km) ▼</th>
+                                <th onclick="sortTable('con', 'conexion_inicial')">Viabilidad ▼</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-con"></tbody>
+                    </table>
+                </div>
+                <div class="table-info">
+                    <span id="info-con">Mostrando 0 registros</span>
+                    <div class="table-pagination" id="pagination-con"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             PESTAÑA 3: Propuesta de Infraestructura (Nivel 4)
+             ═══════════════════════════════════════════════ -->
+        <div id="tab-nuevas-torres" class="tab-content">
+            <div class="tab-context">
+                <div class="tab-context-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg></div>
+                <p><strong>Nivel 4 - Estrategia de Nueva Infraestructura:</strong> Despliegue en zonas sin conectividad ni torres estatales. Se identificaron 9 clústeres prioritarios (agrupando mínimo 5 instituciones a menos de 10 km) que benefician a 81 sitios.</p>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon primary"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Torres Propuestas</div>
+                        <div class="kpi-value"><span id="nt-kpi-torres">9</span><span class="kpi-unit">Clústeres</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon accent"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="4" height="10"></rect><rect x="10" y="10" width="4" height="10"></rect><rect x="16" y="10" width="4" height="10"></rect><path d="M2 22h20"></path><path d="M12 2l10 5H2z"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Sitios Beneficiados</div>
+                        <div class="kpi-value"><span id="nt-kpi-sitios">81</span><span class="kpi-unit">Unidades</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3" /><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /><circle cx="18" cy="5" r="3" /></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Distancia Media a Instituciones</div>
+                        <div class="kpi-value"><span id="nt-kpi-dist">0</span><span class="kpi-unit">km</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon success"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Torres con Línea de Vista</div>
+                        <div class="kpi-value"><span id="nt-kpi-vista">3</span><span class="kpi-unit">/ 9</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid-main">
+                <div class="chart-card map-card">
+                    <div class="chart-header">
+                        <h3>Geolocalización de Clústeres Estratégicos</h3>
+                    </div>
+                    <div class="section-body" style="padding: 0;">
+                        <div class="map-container">
+                            <div id="map-nuevas-torres"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="side-charts">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Dependencia a Torre (Instituciones)</h3>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-sm">
+                            <canvas id="chart-nt-dependencia"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Viabilidad Backhaul Estatal</h3>
+                        </div>
+                        <div class="chart-wrapper chart-wrapper-sm">
+                            <canvas id="chart-nt-backhaul"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Inventario de Clústeres (Nivel 4)</h3>
+                </div>
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label class="filter-label">Sector</label>
+                        <select id="map-nt-filter-sec" class="filter-select" onchange="applyFilters('nt')"><option value="all">Todos los sectores</option></select>
+                    </div>
+                    <button class="btn-reset" onclick="resetFilters('nt')">Restablecer</button>
+                </div>
+                <div class="table-container">
+                    <table id="table-nt" class="data-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('nt', 'grupo')">Sector ▼</th>
+                                <th onclick="sortTable('nt', 'nombre')">Nombre del Sitio ▼</th>
+                                <th onclick="sortTable('nt', 'dist')">Dist. Media (km) ▼</th>
+                                <th onclick="sortTable('nt', 'inst')">Sitios ▼</th>
+                                <th onclick="sortTable('nt', 'torre')">Interconexión ▼</th>
+                                <th onclick="sortTable('nt', 'vista')">Línea Vista ▼</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-nt"></tbody>
+                    </table>
+                </div>
+                <div class="table-info">
+                    <span id="info-nt">Mostrando 0 registros</span>
+                    <div class="table-pagination" id="pagination-nt"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════
+             PESTAÑA 4: Padrón General
+             ═══════════════════════════════════════════════ -->
+        <div id="tab-padron" class="tab-content">
+            <div class="tab-context tab-context--teal">
+                <div class="tab-context-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg></div>
+                <div>
+                    <p><strong>Padrón General (3,547 Instituciones):</strong> Visión completa de la conectividad en el Estado de Sonora clasificada por Índice de Prioridad.</p>
+                </div>
+            </div>
+
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-icon success"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Nivel 1 (Baja Prioridad)</div>
+                        <div class="kpi-value"><span id="padron-kpi-n1">735</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon gold"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Nivel 2 (Media Prioridad)</div>
+                        <div class="kpi-value"><span id="padron-kpi-n2">1,849</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon primary"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Nivel 3 (Alta Prioridad)</div>
+                        <div class="kpi-value"><span id="padron-kpi-n3">755</span></div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon danger"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg></div>
+                    <div class="kpi-info">
+                        <div class="kpi-label">Nivel 4 (Crítica)</div>
+                        <div class="kpi-value"><span id="padron-kpi-n4">208</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="two-col">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Instituciones por Sector y Nivel</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-padron-sectores"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Top 10 Municipios</h3>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="chart-padron-municipios"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>Listado del Padrón Unificado</h3>
+                </div>
+                <div class="filters-bar">
+                    <div class="filter-group">
+                        <label class="filter-label">Municipio</label>
+                        <select id="padron-filter-mun" class="filter-select" onchange="applyFilters('padron')"><option value="all">Todos los municipios</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Sector</label>
+                        <select id="padron-filter-sec" class="filter-select" onchange="applyFilters('padron')"><option value="all">Todos los sectores</option></select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Nivel IPC</label>
+                        <select id="padron-filter-ipc" class="filter-select" onchange="applyFilters('padron')">
+                            <option value="all">Todos los niveles</option>
+                            <option value="Nivel 1 (BAJO)">Nivel 1 (Bajo)</option>
+                            <option value="Nivel 2 (MEDIO)">Nivel 2 (Medio)</option>
+                            <option value="Nivel 3 (ALTO)">Nivel 3 (Alto)</option>
+                            <option value="Nivel 4 (CRITICO)">Nivel 4 (Crítico)</option>
+                        </select>
+                    </div>
+                    <button class="btn-reset" onclick="resetFilters('padron')">Restablecer</button>
+                </div>
+                <div class="table-container">
+                    <table id="table-padron" class="data-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTablePadron('id')">ID ▼</th>
+                                <th onclick="sortTablePadron('nombre')">Institución ▼</th>
+                                <th onclick="sortTablePadron('municipio')">Municipio ▼</th>
+                                <th onclick="sortTablePadron('sector')">Sector ▼</th>
+                                <th onclick="sortTablePadron('ipc')">Nivel IPC ▼</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-padron"></tbody>
+                    </table>
+                </div>
+                <div class="table-info">
+                    <span id="info-padron">Mostrando 0 registros</span>
+                    <div class="table-pagination" id="pagination-padron"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="site-footer">
+        <p><strong>Plataforma de Infraestructura Pública de Telecomunicaciones — Estado de Sonora</strong></p>
+        <p style="margin-top: 6px; font-size: 13px; color: var(--text-tertiary);">Equipo: Ana Sofía Matti Ríos, Daniel Eduardo Alvarez Terrazas, Jesus David Ayala Morales, Christian Alexis Flores Alvarez</p>
+    </footer>
+
+    <!-- Scripts externos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
