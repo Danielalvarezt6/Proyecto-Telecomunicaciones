@@ -52,6 +52,12 @@ El proyecto clasifica cada institución mediante el Índice de Prioridad de Cone
 │   ├── conexiones_nivel3_torres_estatales.csv
 │   ├── torres_propuestas_actualizado.csv
 │   └── INFORMACION TORRES.txt
+├── Diccionarios/
+│   ├── Diccionario_Datos_Dataset_Instituciones_Unificadas.xlsx
+│   ├── Diccionario_Datos_migraciones_posibles.xlsx
+│   ├── Diccionario_Datos_conexiones_nivel3_torres_estatales.xlsx
+│   ├── Diccionario_Datos_torres_propuestas_actualizado.xlsx
+│   └── Diccionario_Datos_INFORMACION_TORRES.xlsx
 └── generacion_entregables_telecomunicaciones.ipynb
 ```
 
@@ -65,7 +71,34 @@ El proyecto clasifica cada institución mediante el Índice de Prioridad de Cone
 - `data/conexiones_nivel3_torres_estatales.csv`: instituciones sin conectividad candidatas a conexión inicial.
 - `data/torres_propuestas_actualizado.csv`: puntos propuestos para nueva infraestructura.
 - `data/INFORMACION TORRES.txt`: torres estatales usadas para el mapa y cruces geográficos.
+- `Diccionarios/`: diccionarios de datos en formato Excel para cada dataset utilizado por el dashboard.
 - `generacion_entregables_telecomunicaciones.ipynb`: libreta reproducible usada para generar los datasets finales desde los archivos fuente y el Modelo Digital de Elevación.
+
+## Flujo de datos
+
+El flujo general del proyecto es:
+
+1. Consolidar y normalizar el padrón de instituciones públicas.
+2. Clasificar cada institución mediante el Índice de Prioridad de Conectividad (IPC).
+3. Cruzar instituciones contra torres estatales mediante coordenadas geográficas.
+4. Calcular distancias hacia la infraestructura estatal más cercana.
+5. Validar preliminarmente línea de vista con apoyo de un Modelo Digital de Elevación.
+6. Generar los datasets finales usados por el dashboard.
+7. Visualizar KPIs, mapas, tablas y gráficas en la aplicación estática.
+
+Los datasets publicados en `data/` son los insumos directos del dashboard. La libreta `generacion_entregables_telecomunicaciones.ipynb` documenta el proceso de generación y permite reproducir los archivos finales a partir de las fuentes de trabajo.
+
+## Diccionarios de datos
+
+La carpeta `Diccionarios/` contiene un diccionario Excel por cada dataset utilizado:
+
+- `Diccionario_Datos_Dataset_Instituciones_Unificadas.xlsx`
+- `Diccionario_Datos_migraciones_posibles.xlsx`
+- `Diccionario_Datos_conexiones_nivel3_torres_estatales.xlsx`
+- `Diccionario_Datos_torres_propuestas_actualizado.xlsx`
+- `Diccionario_Datos_INFORMACION_TORRES.xlsx`
+
+Cada diccionario describe nombre de variable, tipo de dato, formato, unidad de medida, descripción, obligatoriedad, catálogo de referencia, valores nulos y ejemplos. Esto permite interpretar los archivos sin depender del código fuente.
 
 ## Consideraciones
 
@@ -78,8 +111,7 @@ El proyecto clasifica cada institución mediante el Índice de Prioridad de Cone
 - **PapaParse:** lectura local de archivos CSV.
 - **Chart.js:** gráficas y visualizaciones de métricas.
 - **Leaflet:** mapas interactivos, capas y marcadores geográficos.
-- **HTML, CSS y JavaScript:** aplicación estática sin backend.
-- **Google Fonts:** tipografías Inter y Outfit.
+- **HTML, CSS y JavaScript:** 
 
 ## Cómo ejecutar el dashboard
 
@@ -101,4 +133,3 @@ http://localhost:8000
 - Jesus David Ayala Morales
 - Christian Alexis Flores Alvarez
 - Ana Sofía Matti Ríos
-
