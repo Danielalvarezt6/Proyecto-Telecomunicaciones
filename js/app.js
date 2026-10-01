@@ -610,11 +610,14 @@ function renderTablePadron() {
 // ═══════════════════════════════════════════════
 // MAPAS LEAFLET
 // ═══════════════════════════════════════════════
+
 function initMapContainer(mapId) {
     let m = L.map(mapId, {zoomControl: false, preferCanvas: true}).setView([29.2972, -110.3309], 6);
     L.control.zoom({position: 'topleft'}).addTo(m);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; OpenStreetMap', subdomains: 'abcd', maxZoom: 19, detectRetina: true
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors', 
+        maxZoom: 19, 
+        detectRetina: true
     }).addTo(m);
     return m;
 }
